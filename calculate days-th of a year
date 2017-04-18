@@ -1,0 +1,78 @@
+#include <stdio.h>
+struct date {
+	int year;
+	int month;
+	int day;
+};
+int day_of_year(struct date *p);
+int judge(int);
+
+int main(void)
+{
+	int yearday;
+	int repeat, ri;
+	struct date date;
+
+	scanf("%d", &repeat);
+	for (ri = 1; ri <= repeat; ri++) {
+		scanf("%d%d%d", &date.year, &date.month, &date.day);
+		yearday = day_of_year(&date);
+		printf("%d\n", yearday);
+	}
+}
+
+int day_of_year(struct date *p)
+{
+	int year, month, day;
+	int sum = 1;
+	for (month = 1, day = 1; month != p->month||day != p->day;)
+	{
+		sum++;
+		day++;
+		if (day > 31)
+		{
+			month++;
+			day = 1;
+			continue;
+		}
+		if (day > 30)
+			if ((month % 2 == 1 && month <= 7) || (month % 2 == 0 && month >= 8))
+			{
+				continue;
+			}
+			else
+			{
+				month++;
+				day = 1;
+				continue;
+			}
+		if (month == 2)
+		{
+			if (day > 29)
+			{
+				month++;
+				day = 1;
+				continue;
+			}
+			if (day > 28)
+				if (!judge(p->year))
+				{
+					month++;
+					day = 1;
+					continue;
+				}
+		}
+	}
+	return sum;
+}
+
+int judge(int year)
+{
+	if (year % 100 == 0)
+		if (year % 400 == 0)
+			return 1;
+	if (year % 100 != 0)
+		if (year % 4 == 0)
+			return 1;
+	return 0;
+}
